@@ -1,6 +1,13 @@
 # Django Blog - Dockerized Project
 
-This is a fully dockerized Django project with PostgreSQL as the database.
+This is a fully dockerized Django project with PostgreSQL as the database and a simple authentication system.
+
+## ✨ Features
+
+- User authentication (Login/Signup)
+- PostgreSQL database
+- Docker containerization
+- Welcome page for authenticated users
 
 ## 📋 Prerequisites
 
@@ -25,12 +32,18 @@ This command will:
 ### 2. Access the application
 
 Once the containers are running, access:
-- **Application**: http://localhost:8000
+- **Home/Login**: http://localhost:8000/login
+- **Signup**: http://localhost:8000/signup
+- **Welcome Page**: http://localhost:8000 (requires login)
 - **Django Admin**: http://localhost:8000/admin
 
-### 3. Create a superuser
+### 3. Create an account
 
-To access the Django admin, you need to create a superuser:
+You can create a new account by visiting http://localhost:8000/signup
+
+### 4. Create a superuser (Optional)
+
+To access the Django admin panel, you need to create a superuser:
 
 ```bash
 docker-compose exec web python manage.py createsuperuser
