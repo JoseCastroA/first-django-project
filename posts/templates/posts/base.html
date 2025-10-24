@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/css/style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'post_list' %}" class="navbar-brand">✍️ My Blog</a>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'post_list' %}">All Posts</a></li>
+                    <li><a href="{% url 'my_posts' %}">My Posts</a></li>
+                    <li><a href="{% url 'post_create' %}" class="btn-nav">+ New Post</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn-nav">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'post_list' %}">All Posts</a></li>
+                    <li><a href="{% url 'login' %}" class="btn-nav">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 My Blog. Built with Django.</p>
+    </footer>
+</body>
+</html>

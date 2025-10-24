@@ -8,7 +8,7 @@ from django.contrib import messages
 def signup_view(request):
     """User signup view"""
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('post_list')
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -16,7 +16,7 @@ def signup_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Account created successfully!')
-            return redirect('home')
+            return redirect('post_list')
     else:
         form = UserCreationForm()
 
@@ -26,7 +26,7 @@ def signup_view(request):
 def login_view(request):
     """User login view"""
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('post_list')
 
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -37,7 +37,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {username}!')
-                return redirect('home')
+                return redirect('post_list')
     else:
         form = AuthenticationForm()
 

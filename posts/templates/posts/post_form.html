@@ -1,0 +1,135 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}{{ action }} Post - Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="form-card">
+    <h2>{{ action }} Post</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <ul class="errorlist">
+        {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <!-- Title -->
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title *</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+        <ul class="errorlist">
+          {% for error in form.title.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Content -->
+      <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">Content *</label>
+        {{ form.content }}
+        {% if form.content.errors %}
+        <ul class="errorlist">
+          {% for error in form.content.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Excerpt -->
+      <div class="form-group">
+        <label for="{{ form.excerpt.id_for_label }}">Excerpt</label>
+        {{ form.excerpt }}
+        <small style="display: block; margin-top: 0.5rem; color: #666;">
+          Brief description of your post (optional)
+        </small>
+        {% if form.excerpt.errors %}
+        <ul class="errorlist">
+          {% for error in form.excerpt.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Featured Image -->
+      <div class="form-group">
+        <label for="{{ form.featured_image.id_for_label }}">Featured Image</label>
+        {{ form.featured_image }}
+        {% if post and post.featured_image %}
+        <div style="margin-top: 1rem;">
+          <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #666;">Current image:</p>
+          <img src="{{ post.featured_image.url }}" alt="Current image" style="max-width: 200px; border-radius: 5px;">
+        </div>
+        {% endif %}
+        {% if form.featured_image.errors %}
+        <ul class="errorlist">
+          {% for error in form.featured_image.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="{{ form.category.id_for_label }}">Category</label>
+        {{ form.category }}
+        {% if form.category.errors %}
+        <ul class="errorlist">
+          {% for error in form.category.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Tags -->
+      <div class="form-group">
+        <label>Tags</label>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem;">
+          {{ form.tags }}
+        </div>
+        {% if form.tags.errors %}
+        <ul class="errorlist">
+          {% for error in form.tags.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label for="{{ form.status.id_for_label }}">Status *</label>
+        {{ form.status }}
+        <small style="display: block; margin-top: 0.5rem; color: #666;">
+          Draft posts are only visible to you. Published posts are visible to everyone.
+        </small>
+        {% if form.status.errors %}
+        <ul class="errorlist">
+          {% for error in form.status.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <!-- Buttons -->
+      <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+        <button type="submit" class="btn btn-primary">{{ action }} Post</button>
+        <a href="{% if post %}{% url 'post_detail' post.slug %}{% else %}{% url 'my_posts' %}{% endif %}"
+          class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
